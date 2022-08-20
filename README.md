@@ -1,5 +1,9 @@
 this is invoice Account system
-i used ArmyTecTask data base to make this models
+i used ArmyTecTask database to make this models
+
+I Worked with Asp DotNet Core mvc 6
+
+
 i added connection strin in appsetting files
 i installed this packges useing packgeMangerConsole
        1-Microsoft.EntityFrameworkCore.sqlServer
