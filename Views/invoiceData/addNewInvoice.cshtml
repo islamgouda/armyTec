@@ -1,0 +1,36 @@
+﻿@using armyTec.ViewModel
+@model invoiceHeaderVM
+@{
+    
+    SelectList CacherList = new SelectList(ViewBag.cachers, "Id", "CashierName");
+    SelectList BranchList = new SelectList(ViewBag.branches, "Id", "BranchName");
+}
+<form method="post" action="/invoiceData/saveNewInvoice" >
+  <div class="form-group">
+    <label >Customer Name</label>
+    <input type="text" class="form-control" asp-for="CustomerName">
+    
+  </div>
+  <div class="form-group">
+    <label >Invoicedate</label>
+    
+    <input type="datetime-local" name="Invoicedate" class="form-control" asp-for="Invoicedate">
+    
+  </div>
+  <div class="form-group">
+    <label >Cacher</label>
+    
+    <select asp-for="CashierId" name="CashierId" class="form-control" asp-items="CacherList" >
+        
+           </select>
+    
+  </div>
+  <div class="form-group">
+    <label >Branch</label>
+   <select asp-for="BranchId" name="BranchId" class="form-control" asp-items="BranchList" >
+        
+           </select>
+    
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

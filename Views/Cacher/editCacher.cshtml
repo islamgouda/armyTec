@@ -1,0 +1,33 @@
+﻿@using armyTec.ViewModel
+@model updateCacherVM
+
+<form method="post" action="/Cacher/saveUpdatedCacher" >
+    <input type="text" value="@Model.Id" name="Id" asp-for="Id" hidden />
+  <div class="form-group">
+    <label >Cashier Name</label>
+    <input type="text" name="CashierName" value="@Model.CashierName" class="form-control" asp-for="CashierName">
+    
+  </div>
+  <div class="form-group">
+    <label >Branch</label>
+   <select asp-for="BranchId" name="BranchId" class="form-control"  >
+        @{
+            foreach (var item in @ViewBag.branches)
+                {
+                    @if (item.Id == @Model.BranchId)
+                    {
+                        <option value="@item.Id" selected>@item.BranchName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.BranchName</option>
+                    }
+
+                }
+        }
+           </select>
+    
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

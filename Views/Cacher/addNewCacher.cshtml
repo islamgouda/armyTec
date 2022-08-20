@@ -1,0 +1,22 @@
+﻿@using armyTec.ViewModel
+@model newCacherVM
+@{
+    SelectList BranchList = new SelectList(ViewBag.branches, "Id", "BranchName");
+}
+<form method="post" action="/Cacher/saveNew" >
+    
+  <div class="form-group">
+    <label >Cashier Name</label>
+    <input type="text" name="CashierName" value="@Model.CashierName" class="form-control" asp-for="CashierName">
+    
+  </div>
+  <div class="form-group">
+    <label >Branch</label>
+   <select asp-for="BranchId" name="BranchId" class="form-control" asp-items="BranchList" >
+        
+           </select>
+    
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

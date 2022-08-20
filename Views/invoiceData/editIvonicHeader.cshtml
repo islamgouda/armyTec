@@ -1,0 +1,64 @@
+﻿@using armyTec.ViewModel
+@model InHeaderVM
+@{
+    
+    SelectList CacherList = new SelectList(ViewBag.cachers, "Id", "CashierName");
+    SelectList BranchList = new SelectList(ViewBag.branches, "Id", "BranchName");
+}
+<form method="post" action="/invoiceData/saveNewInvoiceHeader" >
+    <input type="text" name="Id" value="@Model.Id" class="form-control" asp-for="Id" hidden>
+  <div class="form-group">
+    <label >Customer Name</label>
+    <input type="text" name="CustomerName" value="@Model.CustomerName" class="form-control" asp-for="CustomerName">
+    
+  </div>
+  <div class="form-group" hidden>
+    <label >Invoicedate</label>
+    
+    <input type="datetime" name="Invoicedate" value="@Model.Invoicedate" class="form-control" asp-for="Invoicedate">
+    
+  </div>
+  <div class="form-group">
+    <label >Cacher</label>
+    
+    <select asp-for="CashierId" name="CashierId" class="form-control" >
+            @{
+                foreach (var item in @ViewBag.cachers)
+                {
+                    @if (item.Id == @Model.CashierId)
+                    {
+                        <option value="@item.Id" selected>@item.CashierName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.CashierName</option>
+                    }
+
+                }
+        }
+        
+           </select>
+    
+  </div>
+  <div class="form-group">
+    <label >Branch</label>
+   <select asp-for="BranchId" name="BranchId" class="form-control"  >
+        @{
+            foreach (var item in @ViewBag.branches)
+                {
+                    @if (item.Id == @Model.BranchId)
+                    {
+                        <option value="@item.Id" selected>@item.BranchName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.BranchName</option>
+                    }
+
+                }
+        }
+           </select>
+    
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

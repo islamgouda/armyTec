@@ -1,0 +1,24 @@
+﻿@using armyTec.ViewModel;
+@model List<CacherVM>
+<a asp-controller="Cacher" asp-action="addNewCacher">ADD NEW CASHER</a>
+<table class="table table-bordered table-hover">
+    <tr>
+        <th>ID</th>
+        <th>CasherName</th>
+        <th>BranchName</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    @{
+        foreach (var item in @Model)
+        {
+            <tr>
+              <td>@item.Id</td>
+               <td>@item.CashierName</td>
+               <td>@item.BranchName</td>
+               <td><a asp-controller="Cacher" asp-action="editCacher" asp-route-id="@item.Id">edit</a></td>
+               <td><a asp-controller="Cacher" asp-action="deleteCacher" asp-route-id="@item.Id">delete</a></td>
+            </tr>
+        }
+    }
+</table>

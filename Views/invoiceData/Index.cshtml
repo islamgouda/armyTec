@@ -1,0 +1,41 @@
+﻿@using armyTec.ViewModel
+@model List<InvoiceViewModel>
+<a asp-controller="invoiceData" asp-action="addNewInvoiceHeader"  class="btn btn-success">ADD NEW INVOICE</a>
+@{
+    foreach (var item in Model)
+    {
+        <div class="d-flex justify-content-center container mt-5">
+       
+        
+       
+        <div class="card p-3 bg-white"><i class="fa fa-apple"></i>
+         <span>
+        <a asp-controller="invoiceData" asp-action="editIvonicHeader" asp-route-id="@item.Id" class="btn btn-success">edit</a>
+       <a asp-controller="invoiceData" asp-action="removeIonvoiceHeader" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+        </span>
+            <div class="about-product text-center mt-2"><img src="https://i.imgur.com/3VTaSeb.png" width="300">
+                <div>
+                    <h4>Customer : @item.CustomerName</h4>
+                    <h6 class="mt-0 text-black-50">@item.Invoicedate.ToShortDateString()</h6>
+                </div>
+            </div>
+            <div class="stats mt-2">
+            @{
+                foreach (var ivItem in item.InvoiceDetails)
+                {
+                            <div class="d-flex justify-content-between  p-price"><span style="display:inline-block;width:40%;">@ivItem.ItemName</span><span>@ivItem.ItemCount</span><span>@ivItem.ItemPrice</span> <a asp-controller="invoiceData" asp-action="edit" asp-route-id="@ivItem.Id">Edit</a><a asp-controller="invoiceData" asp-action="deleteInvoice" asp-route-id="@ivItem.Id">delete</a></div>
+                        }
+                    }
+                   
+                <a asp-controller="invoiceData" asp-action="addInvoiceDetails"   asp-route-headerID="@item.Id" class="btn btn-success" style="float:right;">+</a>
+            </div>
+            <div class="d-flex justify-content-between  total font-weight-bold mt-4"><span>Total</span><span>$@item.total</span></div>
+            <div class="d-flex justify-content-between  total font-weight-bold mt-4"><span>Cacher :</span><span>@item.cahserName</span></div>
+
+            <div class="d-flex justify-content-between  total font-weight-bold mt-4"><span>Branch :</span><span>@item.BranchName</span></div>
+
+
+        </div>
+    </div>
+    }
+}
