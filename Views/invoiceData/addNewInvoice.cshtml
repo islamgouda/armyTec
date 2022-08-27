@@ -83,7 +83,7 @@
        tbl.setAttribute("class","table table-border table-hover");
         tbl.setAttribute("id","itemTable");
        let trl=   document.createElement("tr");
-       trl.innerHTML+=`<th scope="col">ItemName</th><th scope="col">ItemCount</th><th scope="col">ItemPrice</th><th scope="col">Delete</th>`;
+       trl.innerHTML+=`<th scope="col">ItemName</th><th scope="col">ItemCount</th><th scope="col">ItemPrice</th><th scope="col">Delete</th><th scope="col">Edit</th>`;
       trl.setAttribute('id',"itemh");
    
      var it=   document.querySelectorAll(".invItem");
@@ -100,8 +100,11 @@
         tr.setAttribute("scope","row");
         tr.setAttribute("class",itId);
       var itId=  cit.getAttribute('id');
-        tr.innerHTML+=`<td>${NM}</td><td>${Cnt}</td><td>${vl}</td><td><div class="btn btn-danger text-success" onclick="removeIt(${itId})">Delete</div></td>`;
+        tr.innerHTML+=`<td>${NM}</td><td>${Cnt}</td><td>${vl}</td><td><div class="btn btn-danger text-success" onclick="removeIt(${itId})">Delete</div></td><td><div class="btn btn-danger text-success" onclick="editIt(${itId})">Edit</div></td>`;
         tbl.appendChild(tr);
+        cit.querySelector(".ItemName").readOnly = true;
+       cit.querySelector(".ItemCount").readOnly = true;
+       cit.querySelector(".ItemPrice").readOnly = true;
         
        }
       
@@ -144,7 +147,12 @@
       
     }
 
-
+    function editIt(cont){
+        console.log(cont);
+        cont.querySelector(".ItemName").readOnly = false;
+       cont.querySelector(".ItemCount").readOnly = false;
+       cont.querySelector(".ItemPrice").readOnly = false;
+    }
 
     function displayCshvalues(){
     // alert(1);
