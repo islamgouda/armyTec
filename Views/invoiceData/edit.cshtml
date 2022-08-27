@@ -4,17 +4,17 @@
     <input type="text" value="@Model.Id" name="Id" class="form-control" hidden >
   <div class="form-group">
     <label >Item Name</label>
-    <input type="text" value="@Model.ItemName" name="ItemName" class="form-control" asp-for="ItemName">
+    <input type="text" required value="@Model.ItemName" name="ItemName" class="form-control" asp-for="ItemName">
     
   </div>
   <div class="form-group">
     <label >Item Count</label>
-    <input type="text" value="@Model.ItemCount" name="ItemCount" class="form-control" asp-for="ItemCount">
+    <input type="text" required value="@Model.ItemCount" name="ItemCount" class="form-control" asp-for="ItemCount">
     
   </div>
   <div class="form-group">
     <label >Item price</label>
-    <input type="text" value="@Model.ItemPrice" name="ItemPrice" class="form-control" asp-for="ItemPrice">
+    <input type="text" required value="@Model.ItemPrice" name="ItemPrice" class="form-control" asp-for="ItemPrice">
     
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>

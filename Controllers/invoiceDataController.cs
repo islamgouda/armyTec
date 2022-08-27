@@ -111,13 +111,29 @@ namespace armyTec.Controllers
         }
         public IActionResult saveNewInvoice(invoiceHeaderVM headerVM)
         {
-            InvoiceHeader invh = new InvoiceHeader();
-            invh.CustomerName = headerVM.CustomerName;
-            invh.Invoicedate = headerVM.Invoicedate;
-            invh.BranchId = headerVM.BranchId;
-            invh.CashierId = headerVM.CashierId;
-            invoiceRepo.addInvoiceHeader(invh);
-            return RedirectToAction("Index");
+           // if (ModelState.IsValid) {
+                InvoiceHeader invh = new InvoiceHeader();
+                invh.CustomerName = headerVM.CustomerName;
+                invh.Invoicedate = headerVM.Invoicedate;
+                invh.BranchId = headerVM.BranchId;
+                invh.CashierId = headerVM.CashierId;
+                int hId = invoiceRepo.addInvoiceHeaderAndGetId(invh);
+                foreach (invItem v in headerVM.invItem)
+                {
+                    InvoiceDetail invoiceDetail = new InvoiceDetail();
+                    invoiceDetail.ItemName = v.ItemName;
+                    invoiceDetail.ItemCount = v.ItemCount;
+                    invoiceDetail.ItemPrice = v.ItemPrice;
+                    invoiceDetail.InvoiceHeaderId = hId;
+                    invoiceRepo.AddInvoiceDetail(invoiceDetail);
+                }
+                return RedirectToAction("Index");
+         //   }
+            //else
+            //{
+            //    return View("addNewInvoice", headerVM);
+            //}
+            
         }
         public IActionResult removeIonvoiceHeader(int id)
         {
@@ -128,14 +144,14 @@ namespace armyTec.Controllers
         {
             InHeaderVM headerVM = new InHeaderVM();
             InvoiceHeader inv = invoiceRepo.GetInvoiceHeader(id);
-            headerVM.Id= inv.Id;
+            headerVM.Id= (int)inv.Id;
             headerVM.CustomerName = inv.CustomerName;
             headerVM.Invoicedate= inv.Invoicedate;
             headerVM.CashierId= inv.CashierId;
             headerVM.BranchId= inv.BranchId;
 
             ViewBag.branches = branchRepo.getAll();
-            ViewBag.cachers = cacherRepo.getAll();
+            ViewBag.cachers = cacherRepo.getAllByBranchId(inv.BranchId);
             return View(headerVM);
         }
         public IActionResult saveNewInvoiceHeader(InHeaderVM headerVM)
@@ -148,6 +164,11 @@ namespace armyTec.Controllers
             header.CashierId= headerVM.CashierId;
             invoiceRepo.updateInvoiceHeader((int)headerVM.Id, header);
             return RedirectToAction("Index");
+        }
+       public IActionResult getChacherByBranchID(int id)
+        {
+            List<Cashier> cashiers = cacherRepo.getAllByBranchId(id);
+            return Json(cashiers);
         }
 
     }

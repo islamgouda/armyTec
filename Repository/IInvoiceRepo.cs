@@ -21,6 +21,13 @@ namespace armyTec.Repository
             context.SaveChanges();
         }
 
+        public int addInvoiceHeaderAndGetId(InvoiceHeader invoiceHeader)
+        {
+            context.InvoiceHeaders.Add(invoiceHeader);
+            context.SaveChanges();
+            return (int)invoiceHeader.Id;
+        }
+
         public void DeleteInvoiceDetail(int invoiceID)
         {
         InvoiceDetail old= context.InvoiceDetails.FirstOrDefault(invoice => invoice.Id == invoiceID);

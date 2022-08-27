@@ -27,6 +27,11 @@ namespace armyTec.Repository
             return context.Cashiers.ToList();
         }
 
+        public List<Cashier> getAllByBranchId(int id)
+        {
+            return context.Cashiers.Where(c=>c.BranchId==id).ToList();
+        }
+
         public Cashier getByID(int Id)
         {
             return context.Cashiers.FirstOrDefault(cash => cash.Id == Id);

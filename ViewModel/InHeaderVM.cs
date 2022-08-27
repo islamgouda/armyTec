@@ -2,7 +2,7 @@
 {
     public class InHeaderVM
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public string CustomerName { get; set; } = null!;
         public DateTime Invoicedate { get; set; }
         public int? CashierId { get; set; }

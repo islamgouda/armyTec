@@ -9,19 +9,40 @@
     <input type="text" name="Id" value="@Model.Id" class="form-control" asp-for="Id" hidden>
   <div class="form-group">
     <label >Customer Name</label>
-    <input type="text" name="CustomerName" value="@Model.CustomerName" class="form-control" asp-for="CustomerName">
+    <input type="text" name="CustomerName" required value="@Model.CustomerName" class="form-control" asp-for="CustomerName">
     
   </div>
   <div class="form-group" hidden>
     <label >Invoicedate</label>
     
-    <input type="datetime" name="Invoicedate" value="@Model.Invoicedate" class="form-control" asp-for="Invoicedate">
+    <input type="datetime" name="Invoicedate" required value="@Model.Invoicedate" class="form-control" asp-for="Invoicedate">
+    
+  </div>
+  
+  <div class="form-group">
+    <label >Branch</label>
+   <select asp-for="BranchId"  name="BranchId" class="form-control" onchange="myFunction()" >
+        @{
+            foreach (var item in @ViewBag.branches)
+                {
+                    @if (item.Id == @Model.BranchId)
+                    {
+                        <option value="@item.Id" selected>@item.BranchName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Id">@item.BranchName</option>
+                    }
+
+                }
+        }
+           </select>
     
   </div>
   <div class="form-group">
     <label >Cacher</label>
     
-    <select asp-for="CashierId" name="CashierId" class="form-control" >
+    <select asp-for="CashierId" required name="CashierId" class="form-control" >
             @{
                 foreach (var item in @ViewBag.cachers)
                 {
@@ -40,25 +61,41 @@
            </select>
     
   </div>
-  <div class="form-group">
-    <label >Branch</label>
-   <select asp-for="BranchId" name="BranchId" class="form-control"  >
-        @{
-            foreach (var item in @ViewBag.branches)
-                {
-                    @if (item.Id == @Model.BranchId)
-                    {
-                        <option value="@item.Id" selected>@item.BranchName</option>
-                    }
-                    else
-                    {
-                        <option value="@item.Id">@item.BranchName</option>
-                    }
-
-                }
-        }
-           </select>
-    
-  </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<script>
+    var select=document.getElementById('CashierId').value;
+  // setTimeout(myFunction(),10);
+function myFunction(){
+       // debugger
+     var id=document.getElementById('BranchId').value;
+     
+      $.ajax(
+          {
+              url:"/invoiceData/getChacherByBranchID/"+id,
+              success:function(result){
+                  console.log(result);
+                  var cacherlist=document.getElementById('CashierId');
+                  //let course =document.getElementById("course");
+                  //document.getElementById("course").innerHTML="";
+                  cacherlist.innerHTML="";
+                  for(var r of result){
+                      console.log(r);
+                     if(r['id']==select){
+                         cacherlist.innerHTML+='<option selected value="' + r['id'] + '">' + r['cashierName'] + '</option>';
+                     }
+                     else{
+                      cacherlist.innerHTML+='<option value="' + r['id'] + '">' + r['cashierName'] + '</option>';
+                    // document.getElementById("course").innerHTML+="<option value="+r["id"]+">"+r["name"]+"</option>";
+                    // console.log(r["id"]);
+                    }
+                  }
+                  
+
+              }
+
+          }
+      );
+     
+    }
+</script>

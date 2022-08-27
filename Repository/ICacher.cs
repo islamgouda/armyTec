@@ -8,6 +8,7 @@ namespace armyTec.Repository
         public void add(Cashier cashier);
         public void update(int id,Cashier cashier);
         public void delete(int id);
+        public List<Cashier> getAllByBranchId(int id);
 
     }
 }

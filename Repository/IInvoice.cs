@@ -11,6 +11,7 @@ namespace armyTec.Repository
         public InvoiceHeader GetInvoiceHeader(int invoiceID);
         public List<InvoiceHeader> GetAllInvoiceHeader();
         public void addInvoiceHeader(InvoiceHeader invoiceHeader);
+        public int addInvoiceHeaderAndGetId(InvoiceHeader invoiceHeader);
         public void deleteInvoiceHeader(int invoiceID);
         public void updateInvoiceHeader(int invoiceID, InvoiceHeader invoiceHeader);
         

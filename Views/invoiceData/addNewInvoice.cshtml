@@ -8,29 +8,172 @@
 <form method="post" action="/invoiceData/saveNewInvoice" >
   <div class="form-group">
     <label >Customer Name</label>
-    <input type="text" class="form-control" asp-for="CustomerName">
+    <input type="text" required class="form-control" asp-for="CustomerName">
     
   </div>
   <div class="form-group">
     <label >Invoicedate</label>
     
-    <input type="datetime-local" name="Invoicedate" class="form-control" asp-for="Invoicedate">
+    <input type="datetime-local" required name="Invoicedate" class="form-control" asp-for="Invoicedate">
+    
+  </div>
+  <div class="form-group">
+    <label >Branch</label>
+   <select id="BranchId"  name="BranchId" class="form-control" asp-items="BranchList" onchange="displayCshvalues();">
+    </select>
     
   </div>
   <div class="form-group">
     <label >Cacher</label>
     
-    <select asp-for="CashierId" name="CashierId" class="form-control" asp-items="CacherList" >
+    <select id="CashierId"  name="CashierId" class="form-control"  >
         
            </select>
     
   </div>
-  <div class="form-group">
-    <label >Branch</label>
-   <select asp-for="BranchId" name="BranchId" class="form-control" asp-items="BranchList" >
-        
-           </select>
-    
-  </div>
+  <div id="invoiceDArea"></div>
+  <div class="btn btn-success" id="add" onclick="addinvoiceData()">Add invoice Data</div>
+
+  
   <button type="submit" class="btn btn-primary">Submit</button>
+
+  <div class="displayItems">
+
+  </div>
 </form>
+<script>
+
+     var citems=0;
+      var countIt=0;//items with Entered values
+
+    function addinvoiceData(){
+
+     var add =document.getElementById('add');
+     
+     var addinv =document.getElementById('invoiceDArea');
+     //addinv.innerHTML+
+     let elem=`<div class="invItem" id="it${citems}" style="display:flex; justify-content:space-between; margin:20px 0px 20px 0px;">
+     <div class="form-group" style="display:flex; justify-content:center;">
+    <label>Item Name</label>
+    <input type="text" required  class="ItemName form-control" name="invItem[${citems}].ItemName" onchange="changetext()">
+    
+  </div>
+  <div class="form-group" style="display:flex; justify-content:center;">
+    <label >Item Count</label>
+    <input type="number" required class="ItemCount form-control" name="invItem[${citems}].ItemCount" onchange="changetext()">
+    
+  </div>
+  <div class="form-group" style="display:flex; justify-content:center;">
+    <label style="width:40px;" >Item Price</label>
+    <input type="number" required class="ItemPrice form-control" name="invItem[${citems}].ItemPrice" onchange="changetext()">
+   </div>
+    
+  </div>`;
+  addinv.insertAdjacentHTML("beforeend",elem);
+ citems++;
+ countIt++;
+
+    }
+    function changetext(){
+        var parent=document.querySelector(".displayItems");
+        parent.innerHTML="";
+
+        var tbl=document.createElement("table");
+       tbl.style="border:1px solid black;";
+       tbl.setAttribute("class","table table-border table-hover");
+        tbl.setAttribute("id","itemTable");
+       let trl=   document.createElement("tr");
+       trl.innerHTML+=`<th scope="col">ItemName</th><th scope="col">ItemCount</th><th scope="col">ItemPrice</th><th scope="col">Delete</th>`;
+      trl.setAttribute('id',"itemh");
+   
+     var it=   document.querySelectorAll(".invItem");
+     if(it!=null){
+         tbl.appendChild(trl);
+     }
+     for(let cit of it){
+        let childes= cit.childNodes;
+         let NM =cit.querySelector(".ItemName").value;
+        let Cnt=cit.querySelector(".ItemCount").value;
+       let vl= cit.querySelector(".ItemPrice").value;
+       if(NM.length>0&&Cnt.length>0&&vl.length>0){
+        let tr=   document.createElement("tr");
+        tr.setAttribute("scope","row");
+        tr.setAttribute("class",itId);
+      var itId=  cit.getAttribute('id');
+        tr.innerHTML+=`<td>${NM}</td><td>${Cnt}</td><td>${vl}</td><td><div class="btn btn-danger text-success" onclick="removeIt(${itId})">Delete</div></td>`;
+        tbl.appendChild(tr);
+        
+       }
+      
+     }
+     if(countIt>0){
+      parent.appendChild(tbl);
+     }else{
+          parent.innerHTML="";
+     }
+    
+    }
+
+
+    function removeIt(mIt){
+        console.log(countIt)
+        console.log(mIt);
+      var rItemId= mIt.getAttribute('id');
+      console.log(rItemId);
+      var ParItem= document.getElementById('invoiceDArea');//form div
+
+      ParItem.removeChild(mIt);//remove from form div
+       var parent=document.querySelector(".displayItems");
+
+      //  parent.innerHTML="";
+      var tt=  document.getElementById("itemTable");
+      parent.removeChild(tt);//remove table 
+      let itemhed=document.getElementById('itemh');
+      countIt--;
+          console.log(countIt)
+
+      if(countIt==0){
+          tt.removeChild(itemhed);
+           parent.innerHTML="";
+           // parent.removeChild(tt);
+      }
+      else{
+      changetext();//display Table Again
+      }
+     
+      
+    }
+
+
+
+    function displayCshvalues(){
+    // alert(1);
+       // debugger
+     var id=document.getElementById('BranchId').value;
+      $.ajax(
+          {
+              //id=document.getElementById('BranchId').value;
+              url:"/invoiceData/getChacherByBranchID/"+id,
+              success:function(result){
+                  console.log(result);
+                  var cacherlist=document.getElementById('CashierId');
+                  //let course =document.getElementById("course");
+                  //document.getElementById("course").innerHTML="";
+                  cacherlist.innerHTML="";
+                  for(var r of result){
+                      console.log(r);
+                     
+                      cacherlist.innerHTML+='<option value="' + r['id'] + '">' + r['cashierName'] + '</option>';
+                    // document.getElementById("course").innerHTML+="<option value="+r["id"]+">"+r["name"]+"</option>";
+                    // console.log(r["id"]);
+                  }
+                  
+
+              }
+
+          }
+      );
+     
+    }
+
+</script>
